@@ -1,39 +1,57 @@
 class CryptoCurrency {
-  String? id;
-  String? symbol;
-  String? name;
-  String? image;
-  double? currentPrice;
-  double? marketCap;
-  int? marketCapRank;
-  double? high24;
-  double? low24;
-  double? priceChange24;
-  double? priceChangePercentage24;
-  double? circulatingSupply;
-  double? ath;
-  double? atl;
-  bool isFavorite = false;
-  // models
+  final String? id;
+  final String? name;
+  final String? symbol;
+  final String? image;
 
-  CryptoCurrency({required this.id, required this.symbol, required this.name, required this.image, required this.currentPrice, required this.marketCap, required this.marketCapRank, required this.high24, required this.low24, required this.priceChange24, required this.priceChangePercentage24, required this.circulatingSupply, required this.ath, required this.atl});
-// defult constructor
-  factory CryptoCurrency.fromJSON(Map<String, dynamic> map) {
+  final double? currentPrice;
+  final double? marketCap;
+  final int? marketCapRank;
+
+  final double? priceChange24;
+  final double? priceChangePercentage24;
+
+  final double? low24;
+  final double? high24;
+  final double? ath;
+  final double? atl;
+
+  final double? circulatingSupply;
+
+  CryptoCurrency({
+    this.id,
+    this.name,
+    this.symbol,
+    this.image,
+    this.currentPrice,
+    this.marketCap,
+    this.marketCapRank,
+    this.priceChange24,
+    this.priceChangePercentage24,
+    this.low24,
+    this.high24,
+    this.ath,
+    this.atl,
+    this.circulatingSupply,
+  });
+
+  factory CryptoCurrency.fromMap(Map<String, dynamic> map) {
     return CryptoCurrency(
-        id: map["id"],
-        symbol: map["symbol"],
-        name: map["name"],
-        image: map["image"],
-        currentPrice: double.parse(map["current_price"].toString()),
-        marketCap: double.parse(map["market_cap"].toString()),
-        marketCapRank: map["market_cap_rank"],
-        high24: double.parse(map["high_24h"].toString()),
-        low24: double.parse(map["low_24h"].toString()),
-        priceChange24: double.parse(map["price_change_24h"].toString()),
-        priceChangePercentage24: double.parse(map["price_change_percentage_24h"].toString()),
-        circulatingSupply: double.parse(map["circulating_supply"].toString()),
-        ath: double.parse(map["ath"].toString()),
-        atl: double.parse(map["atl"].toString())
+      id: map['id'],
+      name: map['name'],
+      symbol: map['symbol'],
+      image: map['image'],
+      currentPrice: (map['current_price'] as num?)?.toDouble(),
+      marketCap: (map['market_cap'] as num?)?.toDouble(),
+      marketCapRank: map['market_cap_rank'] as int?,
+      priceChange24: (map['price_change_24h'] as num?)?.toDouble(),
+      priceChangePercentage24:
+      (map['price_change_percentage_24h'] as num?)?.toDouble(),
+      low24: (map['low_24h'] as num?)?.toDouble(),
+      high24: (map['high_24h'] as num?)?.toDouble(),
+      ath: (map['ath'] as num?)?.toDouble(),
+      atl: (map['atl'] as num?)?.toDouble(),
+      circulatingSupply: (map['circulating_supply'] as num?)?.toDouble(),
     );
   }
 }

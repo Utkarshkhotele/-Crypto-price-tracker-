@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'pages/HomePage.dart';
-import 'providers/market_provider.dart'; // Or market_provider.dart if that's correct
+import 'providers/market_provider.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider<MarketProvider>(
-          create: (context) => MarketProvider(),
+          create: (context) => MarketProvider()..fetchMarkets(), // ✅ added
         ),
       ],
       child: const MaterialApp(
@@ -26,3 +26,4 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+

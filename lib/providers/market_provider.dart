@@ -1,57 +1,51 @@
-import 'dart:async';
-import 'package:flutter/cupertino.dart';
-import 'package:cryptotracker/models/API.dart';
-import 'package:cryptotracker/models/Cryptocurrency.dart';
+import 'package:flutter/material.dart';
+import '../models/chart_data.dart';
+import '../models/Cryptocurrency.dart';
+import '../models/api.dart';
 
 class MarketProvider with ChangeNotifier {
-  bool isLoading = true;
-  List<CryptoCurrency> markets = [];
-  Timer? _timer;
-  DateTime? lastUpdated;
+  List<CryptoCurrency> _cryptos = [];
+  bool _isLoading = false;
+  String _searchQuery = "";
 
-  MarketProvider() {
-    fetchData();
+  List<CryptoCurrency> get cryptos => _cryptos;
+  bool get isLoading => _isLoading;
+  String get searchQuery => _searchQuery;
 
-    // Auto update every 1 minute
-    _timer = Timer.periodic(const Duration(minutes: 1), (_) {
-      fetchData();
-      print("⏱️ Data auto-updated");
-    });
+  set searchQuery(String value) {
+    _searchQuery = value;
+    notifyListeners(); // trigger rebuild of UI
   }
 
-  /// 🔧 Fixed return type from `void` to `Future<void>`
-  Future<void> fetchData() async {
-    try {
-      isLoading = true;
-      notifyListeners();
+  List<CryptoCurrency> get filteredMarkets {
+    if (_searchQuery.isEmpty) return _cryptos;
+    return _cryptos
+        .where((crypto) =>
+    crypto.name!.toLowerCase().contains(_searchQuery.toLowerCase()) ||
+        crypto.symbol!.toLowerCase().contains(_searchQuery.toLowerCase()))
+        .toList();
+  }
 
-      List<dynamic> _markets = await API.getMarkets();
-      List<CryptoCurrency> temp = [];
+  Future<void> fetchMarkets() async {
+    _isLoading = true;
+    notifyListeners();
 
-      for (var market in _markets) {
-        CryptoCurrency newCrypto = CryptoCurrency.fromJSON(market);
-        temp.add(newCrypto);
-      }
+    final markets = await API.getMarkets();
+    _cryptos = markets.map((e) => CryptoCurrency.fromMap(e)).toList();
 
-      markets = temp;
-      lastUpdated = DateTime.now();
-    } catch (e) {
-      print("❌ Error fetching data: $e");
-    } finally {
-      isLoading = false;
-      notifyListeners();
-    }
+    _isLoading = false;
+    notifyListeners();
   }
 
   CryptoCurrency fetchCryptoById(String id) {
-    return markets.firstWhere((element) => element.id == id);
+    return _cryptos.firstWhere((coin) => coin.id == id);
   }
 
-  @override
-  void dispose() {
-    _timer?.cancel();
-    super.dispose();
+  Future<ChartData?> fetchChartData(String coinId) {
+    return API.getChartData(coinId);
   }
 }
+
+
 
 

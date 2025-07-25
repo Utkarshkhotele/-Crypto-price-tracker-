@@ -1,5 +1,8 @@
-extension InrFormatter on num {
+import 'package:intl/intl.dart';
+
+extension INRFormatter on double {
   String inrFormat() {
-    return "₹ ${toStringAsFixed(2)}";
+    final formatter = NumberFormat.currency(locale: 'en_IN', symbol: '₹');
+    return formatter.format(this);
   }
 }

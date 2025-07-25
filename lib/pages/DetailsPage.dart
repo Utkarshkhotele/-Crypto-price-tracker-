@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cryptotracker/models/Cryptocurrency.dart';
 import 'package:cryptotracker/providers/market_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:cryptotracker/utils/inr_formatter.dart'; // <-- Add extension here
 
 class DetailsPage extends StatefulWidget {
   final String id;
@@ -9,21 +10,30 @@ class DetailsPage extends StatefulWidget {
   const DetailsPage({Key? key, required this.id}) : super(key: key);
 
   @override
-  _DetailsPageState createState() => _DetailsPageState();
+  State<DetailsPage> createState() => _DetailsPageState();
 }
 
 class _DetailsPageState extends State<DetailsPage> {
-  Widget titleAndDetail(String title, String detail, CrossAxisAlignment align) {
+  Widget titleAndDetail(String title, String detail,
+      {CrossAxisAlignment align = CrossAxisAlignment.start}) {
     return Column(
       crossAxisAlignment: align,
       children: [
         Text(
           title,
-          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
+          style: const TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 14,
+            color: Colors.grey,
+          ),
         ),
+        const SizedBox(height: 4),
         Text(
           detail,
-          style: const TextStyle(fontSize: 17),
+          style: const TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w500,
+          ),
         ),
       ],
     );
@@ -32,84 +42,106 @@ class _DetailsPageState extends State<DetailsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: const Text("Crypto Details"),
+        centerTitle: true,
+        elevation: 0,
+        backgroundColor: Colors.black,
+        foregroundColor: Colors.white,
+      ),
       body: SafeArea(
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
+        child: Padding(
+          padding: const EdgeInsets.all(16),
           child: Consumer<MarketProvider>(
             builder: (context, marketProvider, child) {
-              CryptoCurrency currentCrypto =
+              CryptoCurrency crypto =
               marketProvider.fetchCryptoById(widget.id);
 
               return RefreshIndicator(
                 onRefresh: () async {
-                  marketProvider.fetchData();
+                  await marketProvider.fetchData();
                 },
                 child: ListView(
                   physics: const BouncingScrollPhysics(
-                      parent: AlwaysScrollableScrollPhysics()),
+                    parent: AlwaysScrollableScrollPhysics(),
+                  ),
                   children: [
-                    ListTile(
-                      contentPadding: const EdgeInsets.all(0),
-                      leading: CircleAvatar(
-                        backgroundColor: Colors.white,
-                        backgroundImage: NetworkImage(currentCrypto.image!),
-                      ),
-                      title: Text(
-                        "${currentCrypto.name!} (${currentCrypto.symbol!.toUpperCase()})",
-                        style: const TextStyle(fontSize: 20),
-                      ),
-                      subtitle: Text(
-                        "₹ ${currentCrypto.currentPrice!.toStringAsFixed(4)}",
-                        style: const TextStyle(
-                            color: Color(0xff0395eb),
-                            fontSize: 30,
-                            fontWeight: FontWeight.bold),
+                    Row(
+                      children: [
+                        CircleAvatar(
+                          backgroundColor: Colors.white,
+                          backgroundImage: NetworkImage(crypto.image!),
+                          radius: 28,
+                        ),
+                        const SizedBox(width: 16),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "${crypto.name} (${crypto.symbol!.toUpperCase()})",
+                                style: const TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              const SizedBox(height: 4),
+                              Text(
+                                crypto.currentPrice!.inrFormat(),
+                                style: const TextStyle(
+                                  fontSize: 28,
+                                  fontWeight: FontWeight.bold,
+                                  color: Color(0xff0395eb),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 24),
+                    const Text(
+                      "Price Change (24h)",
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
-                    const SizedBox(height: 20),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text(
-                          "Price Change (24h)",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 20),
-                        ),
-                        Builder(builder: (context) {
-                          double priceChange = currentCrypto.priceChange24!;
-                          double priceChangePercentage =
-                          currentCrypto.priceChangePercentage24!;
+                    const SizedBox(height: 8),
+                    Builder(
+                      builder: (context) {
+                        double priceChange = crypto.priceChange24!;
+                        double priceChangePercent =
+                        crypto.priceChangePercentage24!;
+                        final bool isNegative = priceChange < 0;
 
-                          if (priceChange < 0) {
-                            return Text(
-                              "${priceChangePercentage.toStringAsFixed(2)}% (${priceChange.toStringAsFixed(4)})",
-                              style: const TextStyle(
-                                  color: Colors.red, fontSize: 23),
-                            );
-                          } else {
-                            return Text(
-                              "+${priceChangePercentage.toStringAsFixed(2)}% (+${priceChange.toStringAsFixed(4)})",
-                              style: const TextStyle(
-                                  color: Colors.green, fontSize: 23),
-                            );
-                          }
-                        }),
-                      ],
+                        return Text(
+                          "${isNegative ? '' : '+'}${priceChangePercent.toStringAsFixed(2)}% "
+                              "(${isNegative ? '' : '+'}${priceChange.toStringAsFixed(4)})",
+                          style: TextStyle(
+                            fontSize: 20,
+                            color: isNegative ? Colors.red : Colors.green,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        );
+                      },
                     ),
-                    const SizedBox(height: 30),
+                    const Divider(height: 32, thickness: 1),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Expanded(
                           child: titleAndDetail(
-                              "Market Cap",
-                              "₹ ${currentCrypto.marketCap!.toStringAsFixed(4)}",
-                              CrossAxisAlignment.start),
+                            "Market Cap",
+                            crypto.marketCap!.inrFormat(),
+                          ),
                         ),
                         Expanded(
-                          child: titleAndDetail("Market Cap Rank",
-                              "#${currentCrypto.marketCapRank}", CrossAxisAlignment.end),
+                          child: titleAndDetail(
+                            "Market Rank",
+                            "#${crypto.marketCapRank}",
+                            align: CrossAxisAlignment.end,
+                          ),
                         ),
                       ],
                     ),
@@ -119,28 +151,23 @@ class _DetailsPageState extends State<DetailsPage> {
                       children: [
                         Expanded(
                           child: titleAndDetail(
-                              "Low 24h",
-                              "₹ ${currentCrypto.low24!.toStringAsFixed(4)}",
-                              CrossAxisAlignment.start),
+                            "Low 24h",
+                            crypto.low24!.inrFormat(),
+                          ),
                         ),
                         Expanded(
                           child: titleAndDetail(
-                              "High 24h",
-                              "₹ ${currentCrypto.high24!.toStringAsFixed(4)}",
-                              CrossAxisAlignment.end),
+                            "High 24h",
+                            crypto.high24!.inrFormat(),
+                            align: CrossAxisAlignment.end,
+                          ),
                         ),
                       ],
                     ),
                     const SizedBox(height: 20),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: titleAndDetail(
-                              "Circulating Supply",
-                              currentCrypto.circulatingSupply!.toInt().toString(),
-                              CrossAxisAlignment.start),
-                        ),
-                      ],
+                    titleAndDetail(
+                      "Circulating Supply",
+                      crypto.circulatingSupply!.toInt().toString(),
                     ),
                     const SizedBox(height: 20),
                     Row(
@@ -148,18 +175,20 @@ class _DetailsPageState extends State<DetailsPage> {
                       children: [
                         Expanded(
                           child: titleAndDetail(
-                              "All Time Low",
-                              "₹ ${currentCrypto.atl!.toStringAsFixed(4)}",
-                              CrossAxisAlignment.start),
+                            "All Time Low",
+                            crypto.atl!.inrFormat(),
+                          ),
                         ),
                         Expanded(
                           child: titleAndDetail(
-                              "All Time High",
-                              "₹ ${currentCrypto.ath!.toStringAsFixed(4)}",
-                              CrossAxisAlignment.end),
+                            "All Time High",
+                            crypto.ath!.inrFormat(),
+                            align: CrossAxisAlignment.end,
+                          ),
                         ),
                       ],
                     ),
+                    const SizedBox(height: 32),
                   ],
                 ),
               );
@@ -170,3 +199,4 @@ class _DetailsPageState extends State<DetailsPage> {
     );
   }
 }
+

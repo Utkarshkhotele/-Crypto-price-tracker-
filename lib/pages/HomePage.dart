@@ -28,19 +28,19 @@ class _HomePageState extends State<HomePage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Todays Top  ',
+                'Market Cap Leaders ',
                 style: TextStyle(
-                  fontSize: 18,
+                  fontSize: 25,
                   fontWeight: FontWeight.w500,
                 ),
               ),
-              Text(
-                'Crypto',
-                style: TextStyle(
-                  fontSize: 40,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
+              // Text(
+              //   'Leaders',
+              //   style: TextStyle(
+              //     fontSize: 35,
+              //     fontWeight: FontWeight.bold,
+              //   ),
+              // ),
               Expanded(
                 child: Consumer<MarketProvider>(
                   builder: (context, marketProvider, child) {

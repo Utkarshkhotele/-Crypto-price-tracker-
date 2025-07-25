@@ -12,10 +12,9 @@ class PriceChart extends StatelessWidget {
       return const Center(child: Text('⚠️ No chart data available.'));
     }
 
-    // Normalize x-axis (index-based)
     final spots = prices.asMap().entries.map((entry) {
-      final index = entry.key.toDouble(); // x-axis: 0,1,2,...
-      final price = entry.value[1];       // y-axis: price
+      final index = entry.key.toDouble(); // x-axis
+      final price = entry.value[1];       // y-axis
       return FlSpot(index, price);
     }).toList();
 
@@ -27,28 +26,47 @@ class PriceChart extends StatelessWidget {
       children: [
         const Text("📈 7-Day Price Chart", style: TextStyle(fontWeight: FontWeight.bold)),
         const SizedBox(height: 8),
-        SizedBox(
-          height: 200,
-          child: LineChart(
-            LineChartData(
-              minY: minY,
-              maxY: maxY,
-              gridData: FlGridData(show: false),
-              titlesData: FlTitlesData(show: false),
-              borderData: FlBorderData(show: false),
-              lineBarsData: [
-                LineChartBarData(
-                  spots: spots,
-                  isCurved: true,
-                  color: Colors.green,
-                  belowBarData: BarAreaData(
-                    show: true,
-                    color: Colors.green.withOpacity(0.2),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12), // ✅ Enhancement 2
+          child: SizedBox(
+            height: 200,
+            child: LineChart(
+              LineChartData(
+                minY: minY,
+                maxY: maxY,
+                gridData: FlGridData(show: false),
+                titlesData: FlTitlesData(show: false),
+                borderData: FlBorderData(show: false),
+                lineBarsData: [
+                  LineChartBarData(
+                    spots: spots,
+                    isCurved: true,
+                    color: Colors.green,
+                    belowBarData: BarAreaData(
+                      show: true,
+                      color: Colors.green.withOpacity(0.2),
+                    ),
+                    dotData: FlDotData(show: false),
+                    barWidth: 2,
                   ),
-                  dotData: FlDotData(show: false),
-                  barWidth: 2,
+                ],
+
+                // ✅ Enhancement 1: Touch Tooltips
+                lineTouchData: LineTouchData(
+                  enabled: true,
+                  touchTooltipData: LineTouchTooltipData(
+                    tooltipBgColor: Colors.black54,
+                    getTooltipItems: (touchedSpots) {
+                      return touchedSpots.map((spot) {
+                        return LineTooltipItem(
+                          '₹${spot.y.toStringAsFixed(2)}',
+                          const TextStyle(color: Colors.white),
+                        );
+                      }).toList();
+                    },
+                  ),
                 ),
-              ],
+              ),
             ),
           ),
         ),

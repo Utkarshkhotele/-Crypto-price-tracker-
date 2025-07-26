@@ -27,7 +27,7 @@ class PriceChart extends StatelessWidget {
         const Text("📈 7-Day Price Chart", style: TextStyle(fontWeight: FontWeight.bold)),
         const SizedBox(height: 8),
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12), // ✅ Enhancement 2
+          padding: const EdgeInsets.symmetric(horizontal: 12),
           child: SizedBox(
             height: 200,
             child: LineChart(
@@ -50,8 +50,6 @@ class PriceChart extends StatelessWidget {
                     barWidth: 2,
                   ),
                 ],
-
-                // ✅ Enhancement 1: Touch Tooltips
                 lineTouchData: LineTouchData(
                   enabled: true,
                   touchTooltipData: LineTouchTooltipData(

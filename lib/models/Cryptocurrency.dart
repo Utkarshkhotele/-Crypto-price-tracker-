@@ -54,7 +54,6 @@ class CryptoCurrency {
     );
   }
 
-  /// ✅ This fixes the missing method error
   factory CryptoCurrency.fromJson(Map<String, dynamic> json) {
     return CryptoCurrency.fromMap(json);
   }

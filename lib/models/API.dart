@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'chart_data.dart'; // adjust if needed
+import 'chart_data.dart';
 
 class API {
   static Future<List<dynamic>> getMarkets() async {
@@ -21,8 +21,6 @@ class API {
       return [];
     }
   }
-
-  // ✅ MUST be inside this file
   static Future<ChartData?> getChartData(String coinId) async {
     try {
       final Uri url = Uri.parse(

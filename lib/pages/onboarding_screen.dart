@@ -27,7 +27,7 @@ class OnboardingScreen extends StatelessWidget {
               ),
               const SizedBox(height: 20),
               Text(
-                "Welcome to CryptoTracker",
+                "Welcome to Market Movers",
                 style: TextStyle(
                   fontSize: isWide ? 32 : 24,
                   fontWeight: FontWeight.bold,

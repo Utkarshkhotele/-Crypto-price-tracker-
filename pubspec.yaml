@@ -17,6 +17,9 @@ dependencies:
   intl: ^0.18.1
   share_plus: ^11.0.0
   cupertino_icons: ^1.0.8
+  lottie: ^2.7.0
+  google_fonts: ^6.1.0
+
 
 dev_dependencies:
   flutter_test:
@@ -26,15 +29,8 @@ dev_dependencies:
 flutter:
   uses-material-design: true
 
-  # Uncomment and add your assets here:
-  # assets:
-  #   - assets/images/
-
-  # Uncomment and add fonts if using:
-  # fonts:
-  #   - family: CustomFont
-  #     fonts:
-  #       - asset: fonts/CustomFont-Regular.ttf
-  #       - asset: fonts/CustomFont-Bold.ttf
-  #         weight: 700
+  assets:
+    - assets/logo.json
+    - assets/splash.json
+    - assets/splash1.json
 

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:cryptotracker/models/Cryptocurrency.dart';
@@ -17,13 +18,21 @@ class DetailsPage extends StatelessWidget {
       crossAxisAlignment: alignment,
       children: [
         Text(
-          title,
-          style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w500, color: Colors.grey),
+          title.toUpperCase(),
+          style: const TextStyle(
+            fontSize: 12,
+            fontWeight: FontWeight.w500,
+            color: Colors.grey,
+          ),
         ),
         const SizedBox(height: 4),
         Text(
           value,
-          style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.black),
+          style: const TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w700,
+            color: Colors.black87,
+          ),
         ),
       ],
     );
@@ -32,10 +41,16 @@ class DetailsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[100],
+      backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
-        title: const Text("Crypto Details", style: TextStyle(color: Colors.black)),
+        title: const Text(
+          "Crypto Details",
+          style: TextStyle(
+            color: Colors.black,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
         centerTitle: true,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.black),
@@ -65,9 +80,26 @@ class DetailsPage extends StatelessWidget {
                     ),
                     const SizedBox(width: 12),
                     Expanded(
-                      child: Text(
-                        "${crypto.name} (${crypto.symbol!.toUpperCase()})",
-                        style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            crypto.name ?? "",
+                            style: const TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w700,
+                              color: Colors.black87,
+                            ),
+                          ),
+                          Text(
+                            "(${crypto.symbol!.toUpperCase()})",
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.grey[600],
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ],
@@ -79,7 +111,7 @@ class DetailsPage extends StatelessWidget {
                 Text(
                   crypto.currentPrice!.inrFormat(),
                   style: const TextStyle(
-                    fontSize: 28,
+                    fontSize: 30,
                     fontWeight: FontWeight.bold,
                     color: Color(0xff0395eb),
                   ),
@@ -107,94 +139,122 @@ class DetailsPage extends StatelessWidget {
                 const SizedBox(height: 24),
 
                 // Stats Card
-                Card(
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-                  elevation: 3,
-                  child: Padding(
-                    padding: const EdgeInsets.all(20),
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            _infoTile("Market Cap", crypto.marketCap!.inrFormat()),
-                            _infoTile("Market Rank", "#${crypto.marketCapRank}"),
-                          ],
-                        ),
-                        const SizedBox(height: 16),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            _infoTile("Low 24h", crypto.low24!.inrFormat()),
-                            _infoTile("High 24h", crypto.high24!.inrFormat()),
-                          ],
-                        ),
-                        const SizedBox(height: 16),
-                        _infoTile("Circulating Supply", crypto.circulatingSupply!.toInt().toString()),
-                        const SizedBox(height: 16),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            _infoTile("All Time Low", crypto.atl!.inrFormat()),
-                            _infoTile("All Time High", crypto.ath!.inrFormat()),
-                          ],
-                        ),
-                      ],
-                    ),
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(color: Colors.grey.shade300),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.08),
+                        blurRadius: 8,
+                        offset: const Offset(0, 4),
+                      ),
+                    ],
+                  ),
+                  padding: const EdgeInsets.all(20),
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          _infoTile("Market Cap", crypto.marketCap!.inrFormat()),
+                          _infoTile("Market Rank", "#${crypto.marketCapRank}"),
+                        ],
+                      ),
+                      const SizedBox(height: 16),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          _infoTile("Low 24h", crypto.low24!.inrFormat()),
+                          _infoTile("High 24h", crypto.high24!.inrFormat()),
+                        ],
+                      ),
+                      const SizedBox(height: 16),
+                      _infoTile("Circulating Supply", crypto.circulatingSupply!.toInt().toString()),
+                      const SizedBox(height: 16),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          _infoTile("All Time Low", crypto.atl!.inrFormat()),
+                          _infoTile("All Time High", crypto.ath!.inrFormat()),
+                        ],
+                      ),
+                    ],
                   ),
                 ),
 
-                const SizedBox(height: 24),
+                const SizedBox(height: 28),
 
                 // Chart Title
                 const Text(
                   "7-Day Price History",
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w700,
+                    color: Colors.black87,
+                  ),
                 ),
                 const SizedBox(height: 16),
 
-                // Chart Widget
-                FutureBuilder<ChartData?>(
-                  future: Provider.of<MarketProvider>(context, listen: false).fetchChartData(id),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const Center(child: CircularProgressIndicator());
-                    } else if (snapshot.hasError || snapshot.data == null) {
-                      return const Text("⚠️ Failed to load chart data.");
-                    } else {
-                      final prices = snapshot.data!.prices;
+                // Chart Box
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(16),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.08),
+                        blurRadius: 10,
+                        offset: const Offset(0, 4),
+                      ),
+                    ],
+                  ),
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
+                  child: FutureBuilder<ChartData?>(
+                    future: Provider.of<MarketProvider>(context, listen: false).fetchChartData(id),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(child: CircularProgressIndicator());
+                      } else if (snapshot.hasError || snapshot.data == null) {
+                        return const Padding(
+                          padding: EdgeInsets.all(12),
+                          child: Text("⚠️ Failed to load chart data."),
+                        );
+                      } else {
+                        final prices = snapshot.data!.prices;
 
-                      // Normalize timestamps to indexes for better x-axis scaling
-                      final spots = List.generate(
-                        prices.length,
-                            (i) => FlSpot(i.toDouble(), prices[i][1]),
-                      );
+                        final spots = List.generate(
+                          prices.length,
+                              (i) => FlSpot(i.toDouble(), prices[i][1]),
+                        );
 
-                      return SizedBox(
-                        height: 200,
-                        child: LineChart(
-                          LineChartData(
-                            gridData: FlGridData(show: false),
-                            titlesData: FlTitlesData(show: false),
-                            borderData: FlBorderData(show: false),
-                            lineBarsData: [
-                              LineChartBarData(
-                                isCurved: true,
-                                spots: spots,
-                                dotData: FlDotData(show: false),
-                                belowBarData: BarAreaData(
-                                  show: true,
-                                  color: Colors.blue.withOpacity(0.1),
+                        return SizedBox(
+                          height: 200,
+                          child: LineChart(
+                            LineChartData(
+                              gridData: FlGridData(show: false),
+                              titlesData: FlTitlesData(show: false),
+                              borderData: FlBorderData(show: false),
+                              lineBarsData: [
+                                LineChartBarData(
+                                  isCurved: true,
+                                  spots: spots,
+                                  dotData: FlDotData(show: false),
+                                  belowBarData: BarAreaData(
+                                    show: true,
+                                    color: Colors.blue.withOpacity(0.1),
+                                  ),
+                                  color: Colors.blueAccent,
+                                  barWidth: 3,
                                 ),
-                                color: Colors.blueAccent,
-                                barWidth: 3,
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
-                        ),
-                      );
-                    }
-                  },
+                        );
+                      }
+                    },
+                  ),
                 ),
               ],
             ),
@@ -204,6 +264,8 @@ class DetailsPage extends StatelessWidget {
     );
   }
 }
+
+
 
 
 

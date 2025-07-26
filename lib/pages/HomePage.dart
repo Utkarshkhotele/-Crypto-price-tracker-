@@ -15,41 +15,60 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white, // White theme
       body: SafeArea(
-        child: Container(
-          padding: const EdgeInsets.only(
-            top: 20,
-            left: 20,
-            right: 20,
-            bottom: 0,
-          ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
-                'Market Cap Leaders',
-                style: TextStyle(
-                  fontSize: 25,
-                  fontWeight: FontWeight.w500,
-                ),
+              // ✅ Centered Title
+              Row(
+                children: const [
+                  Expanded(
+                    child: Center(
+                      child: Text(
+                        'Market Movers',
+                        style: TextStyle(
+                          fontSize: 22,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
 
+              const SizedBox(height: 16),
+
               // ✅ Search Bar
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 10),
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.grey[100],
+                  borderRadius: BorderRadius.circular(12),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.15),
+                      blurRadius: 6,
+                      offset: const Offset(0, 3),
+                    ),
+                  ],
+                ),
                 child: TextField(
                   decoration: InputDecoration(
                     hintText: "Search Cryptocurrency",
+                    hintStyle: TextStyle(color: Colors.grey[600]),
                     prefixIcon: const Icon(Icons.search),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
+                    border: InputBorder.none,
+                    contentPadding: const EdgeInsets.symmetric(vertical: 14),
                   ),
                   onChanged: (value) {
                     Provider.of<MarketProvider>(context, listen: false).searchQuery = value;
                   },
                 ),
               ),
+
+              const SizedBox(height: 16),
 
               // ✅ List of Cryptos
               Expanded(
@@ -77,15 +96,26 @@ class _HomePageState extends State<HomePage> {
                                 ),
                               );
                             },
-                            contentPadding: const EdgeInsets.all(0),
+                            contentPadding: const EdgeInsets.symmetric(vertical: 4),
                             leading: CircleAvatar(
                               backgroundColor: Colors.white,
                               backgroundImage: NetworkImage(currentCrypto.image!),
                             ),
-                            title: Text(currentCrypto.name!),
-                            subtitle: Text(currentCrypto.symbol!.toUpperCase()),
+                            title: Text(
+                              currentCrypto.name!,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontSize: 16,
+                                color: Colors.black,
+                              ),
+                            ),
+                            subtitle: Text(
+                              currentCrypto.symbol!.toUpperCase(),
+                              style: const TextStyle(color: Colors.grey),
+                            ),
                             trailing: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
                                 Text(
                                   "₹${currentCrypto.currentPrice!.toStringAsFixed(4)}",
@@ -128,4 +158,5 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
+
 

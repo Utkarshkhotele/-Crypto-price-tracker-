@@ -10,9 +10,6 @@ CryptoTracker is a Flutter-based mobile app that lets users track real-time pric
 - INR / USD toggle
 - Onboarding screen with Lottie animations
 
-## 📸 Screenshots
-(You can drag screenshots here or link to assets/images)
-
 ## 🛠️ Tech Stack
 
 - Flutter

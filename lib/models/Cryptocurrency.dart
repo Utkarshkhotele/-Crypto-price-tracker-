@@ -45,13 +45,17 @@ class CryptoCurrency {
       marketCap: (map['market_cap'] as num?)?.toDouble(),
       marketCapRank: map['market_cap_rank'] as int?,
       priceChange24: (map['price_change_24h'] as num?)?.toDouble(),
-      priceChangePercentage24:
-      (map['price_change_percentage_24h'] as num?)?.toDouble(),
+      priceChangePercentage24: (map['price_change_percentage_24h'] as num?)?.toDouble(),
       low24: (map['low_24h'] as num?)?.toDouble(),
       high24: (map['high_24h'] as num?)?.toDouble(),
       ath: (map['ath'] as num?)?.toDouble(),
       atl: (map['atl'] as num?)?.toDouble(),
       circulatingSupply: (map['circulating_supply'] as num?)?.toDouble(),
     );
+  }
+
+  /// ✅ This fixes the missing method error
+  factory CryptoCurrency.fromJson(Map<String, dynamic> json) {
+    return CryptoCurrency.fromMap(json);
   }
 }

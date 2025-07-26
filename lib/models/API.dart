@@ -1,18 +1,15 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'chart_data.dart'; // ✅ relative import (same folder)
+import 'chart_data.dart'; // adjust if needed
 
 class API {
-  /// Fetches current market data for top 151 cryptocurrencies in INR
   static Future<List<dynamic>> getMarkets() async {
     try {
       final Uri url = Uri.parse(
         "https://api.coingecko.com/api/v3/coins/markets?"
             "vs_currency=inr&order=market_cap_desc&per_page=151&page=1&sparkline=false",
       );
-
       final response = await http.get(url);
-
       if (response.statusCode == 200) {
         return jsonDecode(response.body) as List<dynamic>;
       } else {
@@ -25,16 +22,14 @@ class API {
     }
   }
 
-  /// Fetches 7-day chart data for a specific cryptocurrency (coinId)
+  // ✅ MUST be inside this file
   static Future<ChartData?> getChartData(String coinId) async {
     try {
       final Uri url = Uri.parse(
         "https://api.coingecko.com/api/v3/coins/$coinId/market_chart?"
             "vs_currency=inr&days=7",
       );
-
       final response = await http.get(url);
-
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
         return ChartData.fromJson(data);
@@ -48,5 +43,7 @@ class API {
     }
   }
 }
+
+
 
 

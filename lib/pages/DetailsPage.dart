@@ -209,3 +209,11 @@ class DetailsPage extends StatelessWidget {
 
 
 
+
+
+
+
+
+
+
+

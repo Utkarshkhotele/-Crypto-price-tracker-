@@ -1,6 +1,6 @@
-# 📱 CryptoTracker
+# 📱Market Movers
 
-CryptoTracker is a Flutter-based mobile app that lets users track real-time prices, trends, and charts for their favorite cryptocurrencies. It features clean UI, onboarding, favorites, charting with `fl_chart`, and uses CoinGecko API.
+Market Movers is a Flutter-based mobile app that lets users track real-time prices, trends, and charts for their favorite cryptocurrencies. It features clean UI, onboarding, favorites, charting with `fl_chart`, and uses CoinGecko API.
 
 ## 🚀 Features
 

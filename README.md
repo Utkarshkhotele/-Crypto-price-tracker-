@@ -1,16 +1,28 @@
-# cryptotracker
+# 📱 CryptoTracker
 
-A new Flutter project.
+CryptoTracker is a Flutter-based mobile app that lets users track real-time prices, trends, and charts for their favorite cryptocurrencies. It features clean UI, onboarding, favorites, charting with `fl_chart`, and uses CoinGecko API.
 
-## Getting Started
+## 🚀 Features
 
-This project is a starting point for a Flutter application.
+- Real-time crypto data
+- 7-day price history chart
+- Favorite coins tracking
+- INR / USD toggle
+- Onboarding screen with Lottie animations
 
-A few resources to get you started if this is your first Flutter project:
+## 📸 Screenshots
+(You can drag screenshots here or link to assets/images)
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## 🛠️ Tech Stack
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- Flutter
+- Provider (state management)
+- CoinGecko API
+- fl_chart
+- SharedPreferences
+
+## 🧠 How to Run
+
+```bash
+flutter pub get
+flutter run

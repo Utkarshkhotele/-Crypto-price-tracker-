@@ -2,6 +2,9 @@
 
 Market Movers is a Flutter-based mobile app that lets users track real-time prices, trends, and charts for their favorite cryptocurrencies. It features clean UI, onboarding, favorites, charting with `fl_chart`, and uses CoinGecko API.
 
+## 🔗 Try it here  
+[Live Demo](http://preeminent-clafoutis-d4bcd1.netlify.app)
+
 ## 🚀 Features
 
 - Real-time crypto data

@@ -26,3 +26,25 @@ Market Movers is a Flutter-based mobile app that lets users track real-time pric
 ```bash
 flutter pub get
 flutter run
+
+## 🧠 How It Works
+
+- The app fetches real-time cryptocurrency data from the CoinGecko API.  
+- Price history for the last 7 days is visualized using `fl_chart` line charts.  
+- Users can mark/unmark coins as favorites, which are stored locally using SharedPreferences.  
+- The app supports toggling currency display between INR and USD globally.  
+- Onboarding screens introduce the app features with animated Lottie files on first launch.  
+- Provider handles state management for smooth UI updates.  
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome! To contribute:
+
+1. Fork the repo  
+2. Create a new branch: `git checkout -b feature-name`  
+3. Commit your changes: `git commit -m "Add feature"`  
+4. Push to the branch: `git push origin feature-name`  
+5. Open a Pull Request  
+
